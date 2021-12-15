@@ -1,38 +1,82 @@
-.App {
-  text-align: center;
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;500;700&display=swap");
+body,
+html {
+  font-family: "Raleway", sans-serif !important;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+header {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-between;
+  padding: 8px 20px;
 }
 
-.App-link {
-  color: #61dafb;
+/* sidebar design */
+.sidebar {
+  width: 260px;
+  position: fixed;
+  padding: 10px 14px;
+  top: 0;
+  font-size: 14px !important;
+  overflow-y: auto;
+  height: 100vh;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.bg-d,
+.side-menu {
+  background: #2b333e;
+  color: rgb(226, 223, 223);
+}
+
+.side-menu > li,
+.side-menu > a {
+  background: #2b333e !important;
+  color: white !important;
+}
+
+.side-menu > li:hover,
+.side-menu > a:hover {
+  padding-left: 20px;
+  transition: 0.2s;
+}
+
+.side-menu > li:hover > span,
+.side-menu > a:hover > span {
+  transition: 0.2s;
+  transform: rotate(90deg);
+}
+
+.drop-menu {
+  display: block;
+  background: inherit;
+  color: #ddd;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.drop-menu > .list-group-item {
+  background: inherit;
+  color: #ddd;
+}
+
+.drop-menu > a:hover {
+  padding-left: 23px;
+  transition: 0.2s;
+}
+
+.c-pointer {
+  cursor: pointer;
+}
+
+.f-right {
+  float: right;
+}
+
+.content {
+  display: block;
+  margin-left: 260px;
+  /* background: rgba(144, 252, 134, 0.1); */
+  /* background: whitesmoke; */
 }
