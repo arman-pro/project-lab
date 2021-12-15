@@ -1,3 +1,9 @@
+# Developer
+
+Name: Mohammad Arman Ali  
+Facebook: [Mohammad Arman Ali](https://www.facebook.com/mohammadarman.ali.79)  
+E-mail: <mohammadarmanali.din@gmail.com>
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
