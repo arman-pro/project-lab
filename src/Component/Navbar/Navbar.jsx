@@ -39,7 +39,8 @@ export default function Navbar() {
                 </Link>
               </li>
             </ul>
-          </div>
+          </div>{" "}
+          <Link className="btn btn-sm btn-outline-light" to="login" >Login</Link>
         </div>
       </header>
     )
