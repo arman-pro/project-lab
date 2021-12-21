@@ -10,6 +10,7 @@ import { AuthContext } from "./AuthProvider";
 function RequiredAuth({ children }) {
   let auth = useContext(AuthContext);
   let location = useLocation();
+
   // if login false redirect to login page
   if (!auth.login) {
     return <Navigate to="/login" state={{ from: location }} />;

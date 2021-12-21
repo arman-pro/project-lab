@@ -8,18 +8,20 @@ export const AuthContext = React.createContext(null);
  * @returns {ReactContext}
  */
 function AuthProvider({ children }) {
-  const [login, setLogin] = useState(false);
-  const [userName, setUsername] = useState("Arman");
+  const [login, setLogin] = useState(null);
+  const [userName, setUsername] = useState(null);
+  const [token, setToken] = useState(null);
   /**
-   * logged In Applicationo
+   * logged In Application
    * @param {Boolean} login
    * @param {String} userName
    * @param {function} callback
    * @return {void}
    */
-  const appLogin = (login, userName, callback) => {
-    setLogin(true);
+  const appLogin = (login, userName, token, callback) => {
+    setLogin(() => {});
     setUsername(userName);
+    setToken(token);
     callback();
   };
 
@@ -33,7 +35,7 @@ function AuthProvider({ children }) {
     callback();
   };
 
-  const value = { userName, login, appLogin, appLogout };
+  const value = { userName, login, token, appLogin, appLogout };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

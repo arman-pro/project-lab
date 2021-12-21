@@ -1,23 +1,46 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthProvider/AuthProvider";
+import axios from "axios";
 
 export default function Login() {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
   let [userName, setUserName] = useState("");
   let [password, setPassword] = useState("");
-  document.title = "Login Page";
+  document.title = "User Login";
 
-  const appLogin = () => {
-    auth.appLogin(true, "Hasan", () => {
-      navigate(-1);
-    });
-  };
+  // const appLogin = () => {
+  //   auth.appLogin(true, "Hasan", () => {
+  //     navigate(-1);
+  //   });
+  // };
 
   const handleForm = (e) => {
     e.preventDefault();
-    console.log(userName, password);
+    axios.defaults.withCredentials = true;
+    axios.get("http://127.0.0.1:8000/sanctum/csrf-cookie").then((response) => {
+      axios.defaults.withCredentials = true;
+      axios
+        .post(
+          "http://127.0.0.1:8000/api/login",
+          {
+            userName: userName,
+            password: password,
+          },
+          {
+            withCredentials: true,
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((e) => console.log(e));
+    });
   };
 
   const showHidePsw = () => {
@@ -28,24 +51,16 @@ export default function Login() {
       box.type = "password";
     }
   };
-
   return (
     <div className="p-3">
-      <h2>Login Page {auth.userName}</h2>
-      <button
-        type="submit"
-        onClick={appLogin}
-        className="btn btn-sm btn-outline-primary"
-      >
-        Login
-      </button>
       <form
-        style={{ maxWidth: "500px", margin: "auto" }}
+        style={{ maxWidth: "500px", marginTop: "25px", margin: "auto" }}
         className="row g-3 p-3 bg-llight text-dark border rounded"
         method="post"
         onSubmit={handleForm}
       >
         {" "}
+        <h4 className="text-center">User Login</h4>
         <div className="col-sm-12">
           <label htmlFor="userName" className="form-label">
             User Name *
@@ -58,7 +73,6 @@ export default function Login() {
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
             placeholder="User Name"
-            required
           />
           {/* <div className="valid-feedback">Correct User</div> */}
         </div>
@@ -76,7 +90,6 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Write Password"
               aria-describedby="passwordAppend"
-              required
             />
             <span
               role="button"
