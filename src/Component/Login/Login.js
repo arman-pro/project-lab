@@ -1,22 +1,25 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../AuthProvider/AuthProvider";
 import axios from "axios";
 
 export default function Login() {
-  const auth = useContext(AuthContext);
   const navigate = useNavigate();
   let [userName, setUserName] = useState("");
   let [password, setPassword] = useState("");
+  let [type, setType] = useState("password");
   document.title = "User Login";
 
-  // const appLogin = () => {
-  //   auth.appLogin(true, "Hasan", () => {
-  //     navigate(-1);
-  //   });
-  // };
+  useEffect(() => {
+    let auth =
+      localStorage.getItem("auth") !== null
+        ? JSON.parse(localStorage.getItem("auth"))
+        : null;
+    if (auth !== null && auth.login) {
+      navigate("/");
+    }
+  }, []);
 
-  const handleForm = (e) => {
+  const handleForm = async (e) => {
     e.preventDefault();
     axios.defaults.withCredentials = true;
     axios.get("http://127.0.0.1:8000/sanctum/csrf-cookie").then((response) => {
@@ -37,19 +40,28 @@ export default function Login() {
           }
         )
         .then((res) => {
-          console.log(res);
+          if (res.status === 201) {
+            let loginData = res.data;
+            if (loginData.success) {
+              // here will change the user name
+              localStorage.setItem(
+                "auth",
+                JSON.stringify({
+                  login: true,
+                  userName: "N/A",
+                  token: loginData.access_token,
+                })
+              ); // set user login true
+              navigate(-1);
+            }
+          }
         })
         .catch((e) => console.log(e));
     });
   };
 
   const showHidePsw = () => {
-    let box = document.querySelector("#password");
-    if (box.type === "password") {
-      box.type = "text";
-    } else {
-      box.type = "password";
-    }
+    setType(type === "password" ? "text" : "password");
   };
   return (
     <div className="p-3">
@@ -82,7 +94,7 @@ export default function Login() {
           </label>
           <div className="input-group">
             <input
-              type="password"
+              type={type}
               name="password"
               className="form-control"
               id="password"
@@ -97,7 +109,11 @@ export default function Login() {
               id="passwordAppend"
               onClick={showHidePsw}
             >
-              <i className="fa fa-eye"></i>
+              {type === "password" ? (
+                <i className="fa fa-eye"></i>
+              ) : (
+                <i className="fa fa-eye-slash"></i>
+              )}
             </span>
           </div>
           {/* <div className="invalid-feedback">Wrong Password</div> */}
