@@ -32,52 +32,61 @@ export default function Login() {
     setMessage({ show: false, text: null });
 
     axios.defaults.withCredentials = true;
-    axios.get("http://127.0.0.1:8000/sanctum/csrf-cookie").then((response) => {
-      axios
-        .post(
-          "http://127.0.0.1:8000/api/login",
-          {
-            userName: userName,
-            password: password,
-          },
-          {
-            withCredentials: true,
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
+    await axios
+      .get("http://127.0.0.1:8000/sanctum/csrf-cookie")
+      .then((response) => {
+        axios
+          .post(
+            "http://127.0.0.1:8000/api/login",
+            {
+              userName: userName,
+              password: password,
             },
-          }
-        )
-        .then((res) => {
-          // again preloader sppiner set false
-          setLoading(false);
-          if (res.status === 201) {
-            let loginData = res.data;
-            if (loginData.success) {
-              // here will change the user name
-              localStorage.setItem(
-                "auth",
-                JSON.stringify({
-                  login: true,
-                  userName: "N/A",
-                  token: loginData.access_token,
-                })
-              ); // set user login true
-              navigate("/", { state: { message: "Admin Access" } });
+            {
+              withCredentials: true,
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
             }
-          }
-          // console.log(res);
-        })
-        .catch((e) => {
-          setLoading(false);
-          if (e.response.status === 401) {
+          )
+          .then((res) => {
+            // again preloader sppiner set false
+            setLoading(false);
+            if (res.status === 201) {
+              let loginData = res.data;
+              if (loginData.success) {
+                // here will change the user name
+                localStorage.setItem(
+                  "auth",
+                  JSON.stringify({
+                    login: true,
+                    userName: "N/A",
+                    token: loginData.access_token,
+                  })
+                ); // set user login true
+                navigate("/", { state: { message: "Admin Access" } });
+              }
+            }
+          })
+          .catch((e) => {
+            setLoading(false);
             setMessage({
               show: true,
-              text: "Invalid Username or Password",
+              text:
+                e.response.status === 401
+                  ? "Invalid Username or Password"
+                  : e.response.statusText,
             });
-          }
+          });
+      })
+      .catch((e) => {
+        setLoading(false);
+        setMessage({
+          show: true,
+          text: e.message,
         });
-    });
+      });
   };
 
   const showHidePsw = () => {

@@ -1,7 +1,29 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
+import React, { useState } from 'react'
+import {Link, useNavigate} from 'react-router-dom'
+import axios from "axios";
 
 export default function Navbar() {
+  let navigate = useNavigate();
+  const [logoutText, setLogoutText] = useState('Logout');
+  const logout = async () => {
+    setLogoutText('Please Wait');
+    let auth =localStorage.getItem("auth") !== null
+      ? JSON.parse(localStorage.getItem("auth"))
+        : null;
+    if (auth !== null) {
+      axios
+        .get("/logout")
+        .then((res) => {
+          setLogoutText('Logout');
+          if (res.status === 200 && res.data.success === true) {
+            localStorage.setItem("auth", null);
+            navigate("/login", { replace: true });
+          }
+        })
+    }
+    }
+
+  
     return (
         <header className="bg-primary text-light">
         <div className="left-sidebar">
@@ -33,10 +55,9 @@ export default function Navbar() {
                   Settings
                 </Link>
               </li>
-              <li>
-                <Link to="logout" className="dropdown-item">
-                  Logout
-                </Link>
+              
+              <li onClick={logout} className="dropdown-item" role="button">
+               {logoutText}
               </li>
             </ul>
           </div>{" "}

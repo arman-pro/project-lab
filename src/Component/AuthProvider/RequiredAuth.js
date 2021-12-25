@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Sidebar from "../Navbar/Sidebar";
+import axios from "axios";
 
 /**
  * Check User Authentication
@@ -18,6 +19,16 @@ function RequiredAuth({ children }) {
   // if login false redirect to login page
   if (!auth) {
     return <Navigate to="/login" state={{ from: location }} />;
+  } else {
+    // retrive authentication  crediantials
+    axios.defaults.baseURL = "http://127.0.0.1:8000/api/";
+    axios.defaults.headers.post["Accept"] = "application/json";
+    axios.defaults.headers.post["Content-Type"] = "application/json";
+    axios.defaults.withCredentials = true;
+    axios.interceptors.request.use(function (config) {
+      config.headers.Authorization = `Bearer ${auth.token}`;
+      return config;
+    });
   }
   return (
     <div className="App">
