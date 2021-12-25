@@ -18,6 +18,7 @@ header {
   width: 260px;
   position: fixed;
   padding: 10px 14px;
+  transition: 0.3s;
   top: 0;
   font-size: 14px !important;
   overflow-y: auto;
@@ -76,7 +77,7 @@ header {
 
 .content {
   display: block;
-  margin-left: 260px;
+  transition: 0.3s;
   /* background: rgba(144, 252, 134, 0.1); */
   /* background: whitesmoke; */
 }

@@ -28,6 +28,19 @@ export default function Navbar() {
     }
     }
 
+  const showHideSidebar = () => {
+    const sidebar = document.querySelector('#sidebar');
+    const content = document.querySelector('#content');
+    if (content !== undefined && sidebar.style.marginLeft === '0px') {
+      sidebar.style.marginLeft = '-265px';
+      content.style.marginLeft = '0px';
+    } else {
+      sidebar.style.marginLeft = '0px';
+      content.style.marginLeft = '260px';
+    }
+    return;
+  }
+
   
   return (
     <React.Fragment>
@@ -36,7 +49,7 @@ export default function Navbar() {
       }
         <header className="bg-primary text-light">
         <div className="left-sidebar">
-          <button className="btn btn-sm btn-light">
+          <button className="btn btn-sm btn-light" onClick={showHideSidebar} >
             <i className="fa fa-bars"></i>
           </button>
         </div>
