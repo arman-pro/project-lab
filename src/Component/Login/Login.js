@@ -7,6 +7,11 @@ export default function Login() {
   let [userName, setUserName] = useState("");
   let [password, setPassword] = useState("");
   let [type, setType] = useState("password");
+  let [loading, setLoading] = useState(false);
+  let [message, setMessage] = useState({
+    show: false,
+    text: null,
+  });
   document.title = "User Login";
 
   useEffect(() => {
@@ -17,13 +22,17 @@ export default function Login() {
     if (auth !== null && auth.login) {
       navigate("/");
     }
-  }, []);
+  });
 
   const handleForm = async (e) => {
     e.preventDefault();
+    // set loadgin true | show loading sppiner
+    setLoading(true);
+    // hide messagebox
+    setMessage({ show: false, text: null });
+
     axios.defaults.withCredentials = true;
     axios.get("http://127.0.0.1:8000/sanctum/csrf-cookie").then((response) => {
-      axios.defaults.withCredentials = true;
       axios
         .post(
           "http://127.0.0.1:8000/api/login",
@@ -40,6 +49,8 @@ export default function Login() {
           }
         )
         .then((res) => {
+          // again preloader sppiner set false
+          setLoading(false);
           if (res.status === 201) {
             let loginData = res.data;
             if (loginData.success) {
@@ -52,27 +63,42 @@ export default function Login() {
                   token: loginData.access_token,
                 })
               ); // set user login true
-              navigate(-1);
+              navigate("/", { state: { message: "Admin Access" } });
             }
           }
+          // console.log(res);
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          setLoading(false);
+          if (e.response.status === 401) {
+            setMessage({
+              show: true,
+              text: "Invalid Username or Password",
+            });
+          }
+        });
     });
   };
 
   const showHidePsw = () => {
     setType(type === "password" ? "text" : "password");
   };
+  let { show, text } = message;
   return (
     <div className="p-3">
       <form
-        style={{ maxWidth: "500px", marginTop: "25px", margin: "auto" }}
+        style={{ maxWidth: "500px", margin: "auto", marginTop: "20px" }}
         className="row g-3 p-3 bg-llight text-dark border rounded"
         method="post"
         onSubmit={handleForm}
       >
         {" "}
         <h4 className="text-center">User Login</h4>
+        {show && (
+          <div className="alert alert-danger " role="alert">
+            {text}
+          </div>
+        )}
         <div className="col-sm-12">
           <label htmlFor="userName" className="form-label">
             User Name *
@@ -85,6 +111,7 @@ export default function Login() {
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
             placeholder="User Name"
+            required
           />
           {/* <div className="valid-feedback">Correct User</div> */}
         </div>
@@ -102,6 +129,7 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Write Password"
               aria-describedby="passwordAppend"
+              required
             />
             <span
               role="button"
@@ -119,9 +147,19 @@ export default function Login() {
           {/* <div className="invalid-feedback">Wrong Password</div> */}
         </div>
         <div className="col-sm-12">
-          <button type="submit" className="btn btn-sm btn-success">
-            Login
-          </button>
+          {!loading ? (
+            <button type="submit" className="btn btn-sm btn-success">
+              Login
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="btn btn-sm spinner-border"
+              role="status"
+            >
+              <span className="visually-hidden">Loading...</span>
+            </button>
+          )}
         </div>
       </form>
     </div>
