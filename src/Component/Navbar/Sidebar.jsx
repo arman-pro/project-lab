@@ -1,7 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {Link} from 'react-router-dom'
 
 export default function Sidebar() {
+
+  useEffect(() => {
+    const menu = document.querySelectorAll('.c-pointer');
+    menu.forEach(el => el.addEventListener('click', (event) => {
+      const subList = el.childNodes[3];
+          if(subList.style.height==='0px') {
+            const height = subList.childNodes[0].offsetHeight * subList.childNodes.length;
+            subList.style.height = height+'px';
+          } else {
+            subList.style.height = '0';
+          }
+    }))
+  })
+
     return (
         <div className="sidebar bg-d">
           <div className="bg-d">

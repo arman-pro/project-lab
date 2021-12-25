@@ -120,6 +120,7 @@ export default function Login() {
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
             placeholder="User Name"
+            autoFocus
             required
           />
           {/* <div className="valid-feedback">Correct User</div> */}

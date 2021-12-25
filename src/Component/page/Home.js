@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 
 export default function Home() {
-  const [Message, setMessage] = useState(null);
+  // const [Message, setMessage] = useState(null);
 
   function getMessage() {
     axios
