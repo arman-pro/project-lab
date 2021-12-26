@@ -1,0 +1,7 @@
+.action > a {
+  visibility: hidden;
+}
+
+table > tbody > tr:hover .action > a {
+  visibility: visible;
+}

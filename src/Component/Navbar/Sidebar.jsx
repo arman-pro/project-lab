@@ -140,8 +140,8 @@ export default function Sidebar() {
                   className="list-group list-group-flush drop-menu"
                   style={{ height: "0" }}
                 >
-                  <Link to="new" className="list-group-item">
-                  <i className="fa fa-angle-right"></i> Title & Location
+                  <Link to="/doctors" className="list-group-item">
+                  <i className="fa fa-angle-right"></i> Doctor List
                   </Link>
                 </ul>
               </li>

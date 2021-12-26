@@ -4,6 +4,7 @@ import Login from "./Component/Login/Login";
 import Home from "./Component/page/Home";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import RequiredAuth from "./Component/AuthProvider/RequiredAuth";
+import Doctors from "./Component/page/doctor/Doctors";
 
 // // retrive authentication  crediantials
 // let auth =
@@ -39,6 +40,14 @@ function App() {
           element={
             <RequiredAuth>
               <Content />
+            </RequiredAuth>
+          }
+        />
+        <Route
+          path="/doctors"
+          element={
+            <RequiredAuth>
+              <Doctors />
             </RequiredAuth>
           }
         />
