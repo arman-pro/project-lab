@@ -1,9 +1,8 @@
 import axios from "axios";
-import { toast } from "react-toastify";
 
 export default function usePost(){
     const sendPost = function(url, data, formikProps = null) {
-        toast.promise(axios.post(url, data).then(res => {
+        return axios.post(url, data).then(res => {
             // created successfully message
             if(res.status === 201) {
                 if(formikProps) {
@@ -30,18 +29,6 @@ export default function usePost(){
                 throw new Error(err.request.data.message);
             } else {
                 throw new Error(err.message);
-            }
-        }), {
-            pending: "Pealse wait a  moment...",
-            success: {
-                render({data}) {
-                    return `${data}`
-                }
-            },
-            error: {
-                render({data}) {
-                    return `${data}`;
-                }
             }
         });
     } 
