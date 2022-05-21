@@ -20,7 +20,7 @@ header {
   padding: 10px 14px;
   transition: 0.3s;
   top: 0;
-  font-size: 14px !important;
+  font-size: 12px !important;
   overflow-y: auto;
   height: 100vh;
 }

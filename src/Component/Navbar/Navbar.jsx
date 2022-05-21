@@ -3,10 +3,12 @@ import {Link, useNavigate} from 'react-router-dom'
 import axios from "axios"
 import "./Navbar.css"
 import Preloader from '../Loader/Preloader';
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
 
 export default function Navbar() {
   let navigate = useNavigate();
   const [logoutPreload, setLogoutPreload] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const logout = async () => {
     setLogoutPreload(true);
     let auth =localStorage.getItem("auth") !== null
@@ -57,7 +59,33 @@ export default function Navbar() {
           <h4>Lab Managment System</h4>
         </div>
         <div className="right-sidebar">
-          <div className="btn-group">
+          <Dropdown 
+            toggle={()=> setIsOpen(!isOpen)} 
+            isOpen={isOpen}
+            className="btn-group"
+          >
+            <DropdownToggle className="btn btn-outline-light btn-sm" data-toggle="dropdown" caret>
+              Profile
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem>
+                <Link to="profile" className="dropdown-item">
+                  Profile
+                </Link>
+              </DropdownItem>
+              <DropdownItem>
+                <Link to="settings" className="dropdown-item">
+                  Settings
+                </Link>
+              </DropdownItem>
+              <DropdownItem>
+                <li onClick={logout} className="dropdown-item" role="button">
+                Logout
+                </li>
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+          {/* <div className="btn-group">
             <button
               className="btn btn-outline-light btn-sm dropdown-toggle"
               type="button"
@@ -68,9 +96,7 @@ export default function Navbar() {
             </button>
             <ul className="dropdown-menu">
               <li>
-                <Link to="profile" className="dropdown-item">
-                  Profile
-                </Link>
+                
               </li>
               <li>
                 <Link to="settings" className="dropdown-item">
@@ -82,7 +108,8 @@ export default function Navbar() {
                Logout
               </li>
             </ul>
-          </div>{" "}
+          </div>{" "} */}
+          {"  "}
           <Link className="btn btn-sm btn-outline-light" to="login" >Login</Link>
         </div>
       </header>

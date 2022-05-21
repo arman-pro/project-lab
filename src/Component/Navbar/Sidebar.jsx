@@ -143,6 +143,12 @@ export default function Sidebar() {
                   <Link to="/doctors" className="list-group-item">
                   <i className="fa fa-angle-right"></i> Doctor List
                   </Link>
+                  <Link to="/co" className="list-group-item">
+                  <i className="fa fa-angle-right"></i> Add CO
+                  </Link>
+                  <Link to="/categories" className="list-group-item">
+                  <i className="fa fa-angle-right"></i> Add Category
+                  </Link>
                 </ul>
               </li>
             </ul>

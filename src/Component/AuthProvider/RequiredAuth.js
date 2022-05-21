@@ -3,6 +3,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Sidebar from "../Navbar/Sidebar";
 import axios from "axios";
+import { ToastContainer } from "react-toastify";
 
 /**
  * Check User Authentication
@@ -32,6 +33,7 @@ function RequiredAuth({ children }) {
   }
   return (
     <div className="App">
+    <ToastContainer />
       <main>
         <Sidebar />
         <div
