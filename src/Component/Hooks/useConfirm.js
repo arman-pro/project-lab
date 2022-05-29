@@ -1,13 +1,27 @@
-import React from "react";
-import ConfirmBox from "../OtherComp/ConfirmBox";
+import { confirm as confirm_action } from "react-confirm-box";
+import { Button } from "reactstrap";
 
 function useConfirm() {
-    const [confirm, setConfirm] = React.useState(false);
-    const allowed = () => {
-        return <ConfirmBox confirmHandler={setConfirm} />
+    const option = {
+        closeOnOverlayClick: true,
+        render : (message, onConfirm, onCancel) => {
+            return (
+                <>
+                    <div className="p-3 rounded border bg-light shadow-sm">
+                        <h5 className={'text-danger'}>{message}</h5>
+                        <Button color="primary" onClick={onConfirm}>Confirm</Button> &nbsp;
+                        <Button color="danger" outline onClick={onCancel}>Cancel</Button>
+                    </div>
+                </>
+            );
+        }
     }
 
-    return {allowed, confirm};
-};
+    async function confirm(message) {
+        return await confirm_action(message, option);
+    }
+
+    return {confirm};
+}
 
 export default useConfirm;
