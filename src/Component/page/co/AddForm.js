@@ -4,15 +4,17 @@ import { Button, Form, FormGroup} from "reactstrap";
 import InputField from "../../Form/InputField";
 import co_validation from "./co_validation";
 import usePost from "../../Hooks/usePost";
+import useToast from "../../Hooks/useToast";
 
-const AddForm = () => {
+const AddForm = ({storeState}) => {
     const {sendPost} = usePost();
+    const notify = useToast();
     const formik = useFormik({
         initialValues : {full_name: '', code: '', phone: '', address: ''},
         validationSchema : co_validation,
-        onSubmit : (value, formProps) => sendPost('/cos', value, formProps)
-    })
-
+        onSubmit : (value, formProps) => notify(sendPost('/cos', value, {formik:formProps, storeState: storeState}))
+    });
+    
     return (
             <Form inline className="border rounded p-3 shadow" onSubmit={formik.handleSubmit}>
                 <h5 className="text-center">Create New CO</h5>
@@ -63,6 +65,9 @@ const AddForm = () => {
                 <FormGroup className="mb-2">
                 <Button color="success" type="submit">
                     Save
+                </Button>
+                <Button color="danger" className="float-end" type="button" onClick={formik.resetForm}>
+                    Clear
                 </Button>
                 
                 </FormGroup>

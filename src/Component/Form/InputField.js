@@ -7,7 +7,7 @@ const InputField = ({formik, input}) => {
         <React.Fragment>
             <Label htmlFor={input.id}>{input.label}</Label>
             <Input 
-                {...input}  
+                {...input}
                 {...formik.getFieldProps(input.name)}
                 invalid={formik.touched[input.name] && formik.errors[input.name] ? true : false}
                 />
