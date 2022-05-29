@@ -8,7 +8,7 @@ function useConfirm() {
             return (
                 <>
                     <div className="p-3 rounded border bg-light shadow-sm">
-                        <h5 className={'text-danger'}>{message}</h5>
+                        <h5 className={'text-danger mb-3'}>{message}</h5>
                         <Button color="primary" onClick={onConfirm}>Confirm</Button> &nbsp;
                         <Button color="danger" outline onClick={onCancel}>Cancel</Button>
                     </div>

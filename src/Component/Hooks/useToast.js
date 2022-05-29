@@ -11,7 +11,7 @@ function useToast() {
             },
             error: {
                 render({data}) {
-                    return `${data}`;
+                    return `${data.message}`;
                 }
             }
         });

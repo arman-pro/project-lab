@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Preloader from '../../Loader/Preloader'
 import "./Doctor.css"
 import axios from 'axios'
-import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 function Doctors() {
     const [loader, setLoader] = useState(true);
@@ -119,7 +118,6 @@ function Doctors() {
 
     return (
         <div className="p-3 position-relative" style={{ minHeight: "100vh" }}>
-            <ToastContainer />
             {loader ? (<Preloader />) :
                 <React.Fragment>
                    

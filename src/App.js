@@ -5,8 +5,8 @@ import Home from "./Component/page/Home";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import RequiredAuth from "./Component/AuthProvider/RequiredAuth";
 import Doctors from "./Component/page/doctor/Doctors";
-import CO from "./Component/page/co/Co";
 import EditCo from "./Component/page/co/EditCo";
+import CO from "./Component/page/co/Co";
 
 function App() {
   return (
