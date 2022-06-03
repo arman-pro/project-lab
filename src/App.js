@@ -5,6 +5,7 @@ import Home from "./Component/page/Home";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import RequiredAuth from "./Component/AuthProvider/RequiredAuth";
 import Doctors from "./Component/page/doctor/Doctors";
+import EditDoctor from "./Component/page/doctor/EditDoctor";
 import EditCo from "./Component/page/co/EditCo";
 import CO from "./Component/page/co/Co";
 
@@ -33,6 +34,15 @@ function App() {
           element={
             <RequiredAuth>
               <Doctors />
+            </RequiredAuth>
+          }
+        />
+        <Route
+          path="doctors/:id/edit"
+          exact
+          element={
+            <RequiredAuth>
+              <EditDoctor/>
             </RequiredAuth>
           }
         />

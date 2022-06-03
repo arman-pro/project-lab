@@ -15,8 +15,8 @@ function EditCo() {
     const {sendPut} = usePut();
     const notify = useToast();
     let params = useParams();
-    const formik = useFormik({
-        initialValues : {full_name: '', code: '', phone: '', address: ''},
+    const {setValues, setErrors, getFieldProps, errors, touched, handleSubmit, resetForm} = useFormik({
+        initialValues : {full_name: '', code: '', phone: '', address: ""},
         validationSchema : co_validation,
         onSubmit : (value, formProps) => notify(sendPut(`/cos/${params.id}`, value, {error}))
     });
@@ -26,13 +26,17 @@ function EditCo() {
      * @param {object} err from server return
      */
     function error(err) {
-        formik.setErrors(err);
+        setErrors(err);
     };
 
+    const formik_ = React.useMemo(()=> {
+        return {getFieldProps, errors, touched}
+    }, [getFieldProps, errors, touched]);
+
     const setData = useCallback((data) => {
-        formik.setValues(data);
+        setValues(data);
         setIsDisable(false);
-    }, []);
+    }, [setValues]);
 
     useEffect(()=> {
         return sendRequest(`/cos/${params.id}`, setData);
@@ -43,10 +47,10 @@ function EditCo() {
             <div className="row">
                 <div className="col-8 col-md-8 m-auto col-sm-12 rounded border p-3 shadow">
                     <h4>Edit CO Information</h4>
-                    <Form onSubmit={formik.handleSubmit}>
+                    <Form onSubmit={handleSubmit}>
                         <FormGroup className='mb-2'>
                             <InputField
-                                formik={formik}
+                                formik={formik_}
                                 input={{
                                     name: "full_name",
                                     type: "text",
@@ -57,7 +61,7 @@ function EditCo() {
                         </FormGroup>
                         <FormGroup className="mb-2">
                             <InputField 
-                                formik={formik}
+                                formik={formik_}
                                 input={{
                                     name: "code",
                                     type: "text",
@@ -68,7 +72,7 @@ function EditCo() {
                         </FormGroup>
                         <FormGroup className="mb-2">
                             <InputField 
-                                formik={formik}
+                                formik={formik_}
                                 input={{
                                     name: "phone",
                                     type: "tel",
@@ -79,7 +83,7 @@ function EditCo() {
                         </FormGroup>
                         <FormGroup className="mb-2">
                             <InputField 
-                                formik={formik}
+                                formik={formik_}
                                 input={{
                                     name: "address",
                                     type: "text",
@@ -92,7 +96,7 @@ function EditCo() {
                         <Button color="success" type="submit" disabled={isDisable}>
                             Save
                         </Button>
-                        <Button color="danger" className="float-end" type="button" onClick={formik.resetForm}>
+                        <Button color="danger" className="float-end" type="button" onClick={resetForm}>
                             Clear
                         </Button>
                         

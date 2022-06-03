@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default function usePost(){
     const sendPost = function(url, data, carryBag=null) {
-        const {formik=null, storeState=null} = carryBag;
+        const {formik=null, storeState=null,cb=null} = carryBag;
         return axios.post(url, data).then(res => {
             // created successfully message
             if(res.status === 201) {
@@ -12,6 +12,9 @@ export default function usePost(){
                 }
                 if(storeState) {
                     storeState(oldState => [res.data.data, ...oldState]);
+                }
+                if(cb){
+                    cb(res.data);
                 }
                 return res.data.message;
             }

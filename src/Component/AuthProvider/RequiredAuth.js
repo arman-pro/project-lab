@@ -4,6 +4,7 @@ import Navbar from "../Navbar/Navbar";
 import Sidebar from "../Navbar/Sidebar";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 /**
  * Check User Authentication
