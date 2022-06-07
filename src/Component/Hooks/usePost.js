@@ -31,6 +31,9 @@ export default function usePost(){
                         setErrors(errors)
                     }
                 }
+                if(err.response.status === 500) {
+                    throw new Error('Server not found');
+                }
                 throw new Error(err.response.data.message ? err.response.data.message: err.response.statusText);
             }else if(err.request) {
                 throw new Error(err.request.data.message);

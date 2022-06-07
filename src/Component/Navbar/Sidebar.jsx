@@ -141,13 +141,16 @@ export default function Sidebar() {
                   style={{ height: "0" }}
                 >
                   <Link to="/doctors" className="list-group-item">
-                  <i className="fa fa-angle-right"></i> Doctor List
+                  <i className="fa fa-angle-right"></i> Doctor
                   </Link>
                   <Link to="/co" className="list-group-item">
-                  <i className="fa fa-angle-right"></i> Add CO
+                  <i className="fa fa-angle-right"></i> CO/Agent
                   </Link>
                   <Link to="/categories" className="list-group-item">
-                  <i className="fa fa-angle-right"></i> Add Category
+                    <i className="fa fa-angle-right"></i> Category
+                  </Link>
+                  <Link to="/testes" className="list-group-item">
+                    <i className="fa fa-angle-right"></i> Test
                   </Link>
                 </ul>
               </li>

@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import useConfirm from "../../Hooks/useConfirm";
 import useToast from "../../Hooks/useToast";
 import useDelete from "../../Hooks/useDelete";
+import DataTable from "react-data-table-component";
+import Preloader from "../../Loader/Preloader";
 
 
 const CO = () => {
@@ -33,52 +35,64 @@ const CO = () => {
             }
         });
     };
+
+    const columns = [
+        {
+            name: "SL",
+            width: "60px",
+            selector: (row, index) => (index + 1) < 10 ? `0${index + 1}` : `${index + 1}`
+        },
+        {
+            name: "Name",
+            wrap: true,
+            grow: 3,
+            selector: co => co.full_name
+        },
+        {
+            name: "Code",
+            selector: co => co.code
+        },
+        {
+            name: "Mobile",
+            wrap: true,
+            grow: 3,
+            selector: co => co.phone
+        },
+        {
+            name: "Status",
+            selector: co => co.is_active ? (<Badge pill color="primary">Active</Badge>) : (<Badge color="warning">Inactive</Badge>)
+        },
+        {
+            name: "Address",
+            wrap: true,
+            grow: 3,
+            selector: co => co.address
+        },
+        {
+            name: "Action",
+            selector: co => {
+                return ( 
+                    <DropDown text={<BiGridAlt/>}>
+                        <DropdownItem tag={Link} to={`/co/${co.id}/edit`} >
+                            <BiPencil/> Edit
+                        </DropdownItem>                                        
+                        <DropdownItem onClick={() => coDelete(co.id)} className="text-danger">
+                            <BiTrash/> Delete
+                        </DropdownItem>
+                    </DropDown>
+                );
+            }
+        }
+    ];
+
     return (
         <React.Fragment>
         <ContentLayout>
                         
             <div className="row">
-            <div className='col-8 col-md-8 col-sm-12 border rounded shadow'>
-                <table className="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>SL</th>
-                            <th>Name</th>
-                            <th>Code</th>
-                            <th>Mobile</th>
-                            <th>Status</th>
-                            <th>Address</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        users.length <= 0 && (<tr><td colSpan={7} >No Data Available</td></tr>)
-                    }
-                    {
-                        users.length > 0 && users.map((item, index) => (
-                                <tr key={item.code}>
-                                <td>{index + 1}</td>
-                                <td>{item.full_name}</td>
-                                <td>{item.code}</td>
-                                <td>{item.phone}</td>
-                                <td>{item.is_active ? (<Badge pill color="primary">Active</Badge>) : (<Badge color="warning">Inactive</Badge>)}</td>
-                                <td>{item.address}</td>
-                                <td>
-                                    <DropDown text={<BiGridAlt/>}>
-                                        <DropdownItem tag={Link} to={`/co/${item.id}/edit`} >
-                                            <BiPencil/> Edit
-                                        </DropdownItem>                                        
-                                        <DropdownItem onClick={() => coDelete(item.id)} className="text-danger">
-                                            <BiTrash/> Delete
-                                        </DropdownItem>
-                                    </DropDown>
-                                </td>
-                            </tr>
-                        ))
-                    }
-                    </tbody>
-                </table>
+            <div className='col-8 col-md-8 col-sm-12 border rounded shadow position-relative'>
+                {users.length > 0 && (<DataTable columns={columns} data={users} pagination />)}
+                {users.length === 0 && (<Preloader/>)}
             </div>
             <div className="col-4 col-md-4 col-sm-12">
                 <AddForm storeState={setUsers} />

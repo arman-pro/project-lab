@@ -5,12 +5,13 @@ import AddDoctor from './AddDoctor';
 import DropDown from '../../OtherComp/DropDown';
 import { BiGridAlt,BiPencil,BiTrash } from "react-icons/bi";
 import { DropdownItem } from 'reactstrap';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import useGetLoader from '../../Hooks/useGetLoader';
 import InfoAlert from '../../OtherComp/InfoAlert';
 import useDelete from '../../Hooks/useDelete';
 import useToast from '../../Hooks/useToast';
 import useConfirm from '../../Hooks/useConfirm';
+import DataTable from 'react-data-table-component';
 
 function Doctors() {
     const { isLoading, isError, sendRequest } = useGetLoader();
@@ -35,6 +36,57 @@ function Doctors() {
         });
     }
 
+    const columns = [
+        {
+            name: "SL",
+            width: "auto",
+            selector: (row, index) => (index + 1) < 10 ? `0${index + 1}` : `${index + 1}`
+        },
+        {
+            name: "Name",
+            wrap: true,
+            grow: 2,
+            selector: doctor => doctor.name
+        },
+        {
+            name: "E-Mail",
+            wrap:true,
+            grow: 4,
+            selector: doctor => doctor.email
+        },
+        {
+            name: "Phone",
+            wrap:true,
+            grow: 3,
+            selector: doctor => doctor.phone
+        },
+        {
+            name: "Description",
+            wrap:true,
+            grow: 3,
+            style: {
+                padding: "5px"
+            },
+            selector: doctor => doctor.description
+        },
+        {
+            name: "Action",
+            width: "auto",
+            selector: doctor => {
+                return (
+                    <DropDown text={<BiGridAlt/>}>
+                        <DropdownItem tag={Link} to={`/doctors/${doctor.id}/edit`}>
+                            <BiPencil/> Edit
+                        </DropdownItem>                                        
+                        <DropdownItem onClick={()=> deleteDoctor(doctor.id)} className="text-danger">
+                            <BiTrash/> Delete
+                        </DropdownItem>
+                    </DropDown>
+                );
+            }
+        }
+    ];
+
     return (
         <div className="p-3 position-relative" style={{ minHeight: "100vh" }}>
             {
@@ -44,45 +96,10 @@ function Doctors() {
                         <div className='col-8 col-md-8 col-sm-12 border rounded shadow position-relative'>
                        { isLoading && <Preloader /> }
                        {isError && <InfoAlert message={isError} />}
-                       {doctors && <table className="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>SL</th>
-                                    <th>Name</th>
-                                    <th>E-mail</th>
-                                    <th>Phone</th>
-                                    <th>Description</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    doctors.length > 0 ? doctors.map((item, index) => (
-                                        <tr key={index}>
-                                            <td>#{index + 1}</td>
-                                            <td>{item.name}</td>
-                                            <td>{item.email ? item.email : 'N/A'}</td>
-                                            <td>{item.phone ? item.phone : 'N/A'}</td>
-                                            <td>
-                                                {item.description}
-                                            </td>
-                                            <td className="action">
-                                            <DropDown text={<BiGridAlt/>}>
-                                                <DropdownItem tag={Link} to={`/doctors/${item.id}/edit`}>
-                                                    <BiPencil/> Edit
-                                                </DropdownItem>                                        
-                                                <DropdownItem onClick={()=> deleteDoctor(item.id)} className="text-danger">
-                                                    <BiTrash/> Delete
-                                                </DropdownItem>
-                                            </DropDown>
-                                            </td>
-                                        </tr>
-                                    )) : (<tr><td className="text-center text-muted" colSpan={4}>No Data Found</td></tr>)
-                                }
-
-                            </tbody>
-                            
-                        </table> }
+                       {
+                           doctors && <DataTable columns={columns} data={doctors} pagination />
+                       }
+                       
                         </div>
                             <div className="col-4 col-md-4 col-sm-12">
                                 <AddDoctor storeState={setDoctors} />

@@ -1,8 +1,9 @@
 import React from 'react';
 import { FormFeedback, Input, Label } from 'reactstrap';
 
-const InputField = ({formik, input}) => {
-// {...formik.getFieldProps(input.name)}
+const InputField = (props) => {
+    const {formik, input} = props;
+    console.log(input);
     return (
         <React.Fragment>
             <Label htmlFor={input.id}>{input.label}</Label>
@@ -10,7 +11,7 @@ const InputField = ({formik, input}) => {
                 {...input}
                 onBlur={formik.getFieldProps(input.name).onBlur}
                 onChange={formik.getFieldProps(input.name).onChange}
-                value={formik.getFieldProps(input.name).value !== null ? formik.getFieldProps(input.name).value : ' '}
+                value={formik.getFieldProps(input.name).value !== null ? formik.getFieldProps(input.name).value : ''}
                 invalid={formik.touched[input.name] && formik.errors[input.name] ? true : false}
                 />
             {

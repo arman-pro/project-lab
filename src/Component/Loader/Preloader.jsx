@@ -4,7 +4,7 @@ import "./Preloader.css"
 function Preloader() {
     return (
         <div className="preload">
-        <div className="text-center preload-item">
+        <div className="text-center  text-info preload-item">
           <div className="spinner-border" role="status">
             <span className="visually-hidden">Loading...</span>
           </div>

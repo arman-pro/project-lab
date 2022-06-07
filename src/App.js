@@ -8,6 +8,9 @@ import Doctors from "./Component/page/doctor/Doctors";
 import EditDoctor from "./Component/page/doctor/EditDoctor";
 import EditCo from "./Component/page/co/EditCo";
 import CO from "./Component/page/co/Co";
+import Category from "./Component/page/category/Category";
+import CategoryEdit from "./Component/page/category/CategoryEdit";
+import Test from "./Component/page/test/Test";
 
 function App() {
   return (
@@ -60,6 +63,33 @@ function App() {
           element={
             <RequiredAuth>
               <EditCo/>
+            </RequiredAuth>
+          }
+        />
+        <Route
+          path="/categories"
+          exact
+          element={
+            <RequiredAuth>
+              <Category/>
+            </RequiredAuth>
+          }
+        />
+        <Route
+          path="/categories/:id/edit"
+          exact
+          element={
+            <RequiredAuth>
+              <CategoryEdit/>
+            </RequiredAuth>
+          }
+        />
+        <Route
+          path="/testes"
+          exact
+          element={
+            <RequiredAuth>
+              <Test/>
             </RequiredAuth>
           }
         />

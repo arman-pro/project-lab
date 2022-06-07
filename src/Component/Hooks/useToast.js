@@ -1,7 +1,8 @@
 import { toast } from "react-toastify";
+import {useCallback} from "react";
 
 function useToast() {
-    const notify = (promise) => {
+    const notify = useCallback((promise) => {
         toast.promise(promise, {
             pending: "Pealse wait a  moment...",
             success: {
@@ -15,7 +16,7 @@ function useToast() {
                 }
             }
         });
-    }
+    }, []);
     return notify;
 }
 
