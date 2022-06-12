@@ -3,7 +3,6 @@ import { FormFeedback, Input, InputGroup, Label } from 'reactstrap';
 
 function InputWithButton(props) {
     const {formik, input, leftButton} = props;
-    console.log(input);
     return (
         <>
             {input.label && (<Label htmlFor={input.id}>{input.label}</Label>) }

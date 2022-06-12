@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import useConfirm from '../../Hooks/useConfirm';
 import useDelete from '../../Hooks/useDelete';
 import DataTable from 'react-data-table-component';
+import customStyle from '../../../dataTableStyle';
 
 function Category() {
     const [categories, setCategories] = useState(null);
@@ -98,7 +99,7 @@ function Category() {
                     isError && (<InfoAlert message={isError} />)
                 }
                 {
-                    categories && ( <DataTable columns={columns} data={categories} pagination /> )
+                    categories && ( <DataTable columns={columns} customStyles={customStyle} data={categories} pagination /> )
                 }
                
                 </div>

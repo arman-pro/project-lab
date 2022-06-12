@@ -11,6 +11,7 @@ import useToast from "../../Hooks/useToast";
 import useDelete from "../../Hooks/useDelete";
 import DataTable from "react-data-table-component";
 import Preloader from "../../Loader/Preloader";
+import customStyle from "../../../dataTableStyle";
 
 
 const CO = () => {
@@ -91,7 +92,7 @@ const CO = () => {
                         
             <div className="row">
             <div className='col-8 col-md-8 col-sm-12 border rounded shadow position-relative'>
-                {users.length > 0 && (<DataTable columns={columns} data={users} pagination />)}
+                {users.length > 0 && (<DataTable columns={columns} customStyles={customStyle} data={users} pagination />)}
                 {users.length === 0 && (<Preloader/>)}
             </div>
             <div className="col-4 col-md-4 col-sm-12">

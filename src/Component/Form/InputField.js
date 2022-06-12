@@ -1,9 +1,8 @@
-import React from 'react';
+import React,{memo} from 'react';
 import { FormFeedback, Input, Label } from 'reactstrap';
 
 const InputField = (props) => {
     const {formik, input} = props;
-    console.log(input);
     return (
         <React.Fragment>
             <Label htmlFor={input.id}>{input.label}</Label>
@@ -26,4 +25,4 @@ const InputField = (props) => {
     )
 }
 
-export default React.memo(InputField);
+export default memo(InputField);

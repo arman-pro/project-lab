@@ -1,20 +1,18 @@
 import { useFormik } from "formik";
-import { useState, useMemo, memo, useCallback, useEffect } from "react";
-import { Button, Form, FormGroup } from "reactstrap";
+import { useMemo, memo, useCallback } from "react";
+import { Button, Form, FormGroup,FormFeedback,Label } from "reactstrap";
 import InputField from "../../Form/InputField";
 import InputWithButton from '../../Form/InputWithButton';
 import { test_field, test_validation } from "./test_field";
-
+import Select from 'react-select';
 
 const GenerateButton = memo(({onClickHandler}) => {
-    console.log('gen button');
     return (
-        <Button type="button" color="dark" onClick={onClickHandler}>Generate</Button>
+        <Button type="button" color="dark" className="position-relative" style={{zIndex:0}} onClick={onClickHandler}>Generate</Button>
     );
 });
 
 const PercentText = memo(() => {
-    console.log('percent text');
     return (
         <Button type="button" color="dark">
             <b>%</b>
@@ -22,24 +20,60 @@ const PercentText = memo(() => {
     );
 });
 
-const AddTest = () => {
-    const [categories, setCategories] = useState([]);
-
-    const {setValues, setErrors, getFieldProps, errors, touched, handleSubmit, resetForm} = useFormik({
-        initialValues: test_field,
+const AddTest = ({editTest, categories, saveTest}) => {
+    const { setValues, getFieldProps, errors, touched, handleSubmit, resetForm} = useFormik({
+        initialValues: editTest ? editTest : test_field,
         validationSchema: test_validation,
-        onSubmit : (value, formProps) => {}
+        onSubmit : (value, formProps) => saveTest(value, formProps)
     });
 
-    useEffect(() => {
+    const formik = {getFieldProps, errors, touched};
 
-    }, []);
+    const percentFormik = {
+        getFieldProps : (name) => {
+            let {onBlur} = getFieldProps(name);
+            const customeBlur = (e) => {
+                let percent = e.target.value;
+                if(percent) {
+                    setValues(preState => {
+                        return {
+                            ...preState, 
+                            'ref_amount' : Math.round((getFieldProps('price').value ?? 0) * (percent ?? 0) / 100)
+                        }
+                    });
+                };
+                onBlur(e);
+                return;
+            }
+            return {...getFieldProps(name), onBlur:customeBlur};
+        },
+        errors, touched
+    };
 
-    const formik = useMemo(() => {
-        return {getFieldProps, errors, touched};
-    }, [getFieldProps, errors, touched]);
+    const refFormik = {
+        getFieldProps : (name) => {
+            let {onBlur} = getFieldProps(name);
+            const customeBlur = (e) => {
+                let amount = e.target.value;
+                if(amount) {
+                    setValues(preState => {
+                        return {
+                            ...preState, 
+                            'ref_percent' : Math.ceil((100 * (amount ?? 0)) / (getFieldProps('price').value ?? 0))
+                        }
+                    });
+                };
+                onBlur(e);
+                return;
+            }
+            return {...getFieldProps(name), onBlur:customeBlur};
+        },
+        errors, touched
+    };
 
-    const {name, code, price, ref_percent, ref_amount, category} = useMemo(() => {
+    
+
+    const {name, code, price, ref_percent, ref_amount} = useMemo(() => {
         return {
             name: {
                 name: "name",
@@ -73,12 +107,6 @@ const AddTest = () => {
                 label: "Ref. Amount",
                 min: 0,
                 id: "ref_amount"
-            },
-            category: {
-                name: "category_id",
-                type: "select",
-                label: "Category",
-                id: "category_id"
             }
         }
     }, []);
@@ -89,10 +117,45 @@ const AddTest = () => {
             return {...prevState, code: gencode }
         });
     }, [setValues]);
+    
+    const categoryHandle = (props) => {
+        touched['category_id'] = true;
+        if(!props) {
+            setValues(preValue => {
+                return {...preValue, category_id: ''}
+            });
+            return;
+        }
+        let {value} = props;
+        setValues(preValue => {
+            return {...preValue, category_id: value}
+        });
+    }
+
+    const selectClassName = 'form-control p-0 border-0 '+touched['category_id'] && errors['category_id'] ? ' is-invalid' : '';
 
     return (
-        <Form method="post">
-            <h4>Create New Test</h4>
+        <Form method="post" onSubmit={handleSubmit} >
+            <FormGroup>
+                <Label htmlFor="category_id">Category</Label>
+                <Select
+                    className={selectClassName}
+                    isDisabled={false}
+                    isLoading={false}
+                    isClearable={true}
+                    onChange={categoryHandle}
+                    name="category_id"
+                    id="category_id"
+                    options={categories}
+                    placeholder="Select Category"
+                    style={{zIndex:"100"}}
+                    defaultValue={editTest ? {value : editTest.id, label: editTest.category_name} : null}
+                    />
+                    {
+                        touched['category_id'] && errors['category_id'] && (<FormFeedback>{errors['category_id']}</FormFeedback>) 
+                    }
+            </FormGroup>
+
             <FormGroup>
                 <InputField
                     formik={formik}
@@ -110,31 +173,25 @@ const AddTest = () => {
             <FormGroup>
                 <InputField
                     formik={formik}
-                    input={category}
-                />
-            </FormGroup>
-
-            <FormGroup>
-                <InputField
-                    formik={formik}
                     input={price}
                 />
             </FormGroup>
             <FormGroup>
                 <InputWithButton
-                    formik={formik}
+                    formik={percentFormik}
                     input={ref_percent}
                     leftButton={<PercentText/>}
                 />
             </FormGroup>
             <FormGroup>
                 <InputField
-                    formik={formik}
+                    formik={refFormik}
                     input={ref_amount}
                 />
             </FormGroup>
             <FormGroup className="mb-2">
-                <Button type="submit" color="success">Create</Button>
+                {!editTest && <Button type="submit" color="success">Create</Button>}
+                {editTest && <Button type="submit" color="success">Save</Button>}
                 <Button type="button" className="float-end" color="danger" onClick={resetForm}>Clear</Button>
             </FormGroup>
         </Form>

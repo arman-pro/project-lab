@@ -12,6 +12,7 @@ import useDelete from '../../Hooks/useDelete';
 import useToast from '../../Hooks/useToast';
 import useConfirm from '../../Hooks/useConfirm';
 import DataTable from 'react-data-table-component';
+import customStyle from '../../../dataTableStyle';
 
 function Doctors() {
     const { isLoading, isError, sendRequest } = useGetLoader();
@@ -97,7 +98,7 @@ function Doctors() {
                        { isLoading && <Preloader /> }
                        {isError && <InfoAlert message={isError} />}
                        {
-                           doctors && <DataTable columns={columns} data={doctors} pagination />
+                           doctors && <DataTable customStyles={customStyle} columns={columns} data={doctors} pagination />
                        }
                        
                         </div>
