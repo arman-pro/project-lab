@@ -40,7 +40,7 @@ function RequiredAuth({ children }) {
         <div
           className="content"
           id="content"
-          style={{ minHeight: "100vh", marginLeft: "260px" }}
+          style={{ minHeight: "100vh", marginLeft: "200px" }}
         >
           <Navbar />
           {children}

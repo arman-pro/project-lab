@@ -35,7 +35,7 @@ export default function Sidebar() {
                   className="list-group list-group-flush drop-menu"
                   style={{ height: "0" }}
                 >
-                  <Link to="/new" className="list-group-item">
+                  <Link to="/add-patient" className="list-group-item">
                     <i className="fa fa-angle-right"></i> New Patient
                   </Link>
                   <Link to="/new" className="list-group-item">

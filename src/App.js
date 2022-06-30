@@ -11,6 +11,7 @@ import CO from "./Component/page/co/Co";
 import Category from "./Component/page/category/Category";
 import CategoryEdit from "./Component/page/category/CategoryEdit";
 import Test from "./Component/page/test/Test";
+import AddPatient from "./Component/page/patient/AddPatient";
 
 function App() {
   return (
@@ -90,6 +91,15 @@ function App() {
           element={
             <RequiredAuth>
               <Test/>
+            </RequiredAuth>
+          }
+        />
+        <Route
+          path="/add-patient"
+          exact
+          element={
+            <RequiredAuth>
+              <AddPatient/>
             </RequiredAuth>
           }
         />

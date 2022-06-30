@@ -15,7 +15,7 @@ header {
 
 /* sidebar design */
 .sidebar {
-  width: 260px;
+  width: 200px;
   position: fixed;
   padding: 10px 14px;
   transition: 0.3s;

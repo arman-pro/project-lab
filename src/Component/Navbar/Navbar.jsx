@@ -34,11 +34,11 @@ export default function Navbar() {
     const sidebar = document.querySelector('#sidebar');
     const content = document.querySelector('#content');
     if (content !== undefined && sidebar.style.marginLeft === '0px') {
-      sidebar.style.marginLeft = '-265px';
+      sidebar.style.marginLeft = '-210px';
       content.style.marginLeft = '0px';
     } else {
       sidebar.style.marginLeft = '0px';
-      content.style.marginLeft = '260px';
+      content.style.marginLeft = '200px';
     }
     return;
   }
